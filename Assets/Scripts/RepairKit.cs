@@ -1,18 +1,17 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class RepairKit : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    protected Slot _slot;
 
-    // Update is called once per frame
-    void Update()
+    protected bool _onPlace = false;
+
+    private void OnCollisionEnter(Collision collision)
     {
-        
+        Debug.Log("Contact!");
+
+        _slot = collision.gameObject.GetComponentInChildren<Slot>();
+
+        transform.SetParent(_slot.transform);
     }
 }

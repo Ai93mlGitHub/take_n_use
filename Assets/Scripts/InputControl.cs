@@ -13,9 +13,14 @@ public class InputControl : MonoBehaviour
         return new Vector3(_horizontal, 0f, _vertical).normalized;
     }
 
-    public bool IsJumping()
+    public float GetVerticalInputStatus()
     {
-        return Input.GetButtonDown("Jump");
+        return Input.GetAxis("Vertical");
+    }
+
+    public float GetHorizontalInputStatus()
+    {
+        return Input.GetAxis("Horizontal");
     }
 
     public bool IsUsing()

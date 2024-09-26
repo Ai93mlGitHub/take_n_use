@@ -2,38 +2,65 @@ using UnityEngine;
 
 public class Movement : MonoBehaviour
 {
-    [SerializeField] private float _moveSpeed = 5f;
-    [SerializeField] private float _turnTorque = 10f;
+    public float MoveSpeed { get; private set; } = 15f;
+    public float TurnSpeed { get; private set; } = 90f;
+    public float RayDistance { get; private set; } = 3f;
+    public Vector3 RayPositionOffset { get; private set; } = new Vector3(0, 1, 0);
 
-    private InputControl _inputControl;
-    private Rigidbody _rigidBody;
-
-    private void Awake()
+    public Movement()
     {
-        _inputControl = GetComponent<InputControl>();
-        _rigidBody = GetComponent<Rigidbody>();
     }
 
-    private void Update()
+    public Movement(float initialSpeed, float initialTurnSpeed, float initialRayDistance, Vector3 initialRayPosOffset)
     {
-        // Получаем вектор движения
-        Vector3 movementVector = _inputControl.GetMovementVector();
-
-        // Двигаем и поворачиваем объект
-        Move(movementVector);
-        Turn(movementVector.x); // Используем горизонтальную ось для вращения
+        MoveSpeed = initialSpeed;
+        TurnSpeed = initialTurnSpeed;
+        RayDistance = initialRayDistance;
+        RayPositionOffset = initialRayPosOffset;
     }
 
-    private void Move(Vector3 direction)
+    public float GetMovementDirection(Transform target, float moveDirection)
     {
-        Vector3 moveForce = direction * _moveSpeed;
-        _rigidBody.AddForce(moveForce, ForceMode.Force);
+        if (moveDirection > 0 && RaycastObstacleCheck(target, moveDirection))
+            moveDirection = 0;
+
+        if (moveDirection < 0 && RaycastObstacleCheck(target, moveDirection))
+            moveDirection = 0;
+
+        return moveDirection;
     }
 
-    private void Turn(float horizontalInput)
+    public void Move(Transform target, float moveDirection)
     {
-        // Создаем вектор для вращающего момента по оси Y, используя горизонтальный вход
-        Vector3 torque = Vector3.up * horizontalInput * _turnTorque;
-        _rigidBody.AddTorque(torque, ForceMode.Force);
+        Vector3 move = target.transform.forward * moveDirection * MoveSpeed * Time.deltaTime;
+        target.transform.position += move;
     }
+
+    public void Turn(Transform target, float moveDirection, float turnDirection)
+    {
+        if (moveDirection < 0)
+            turnDirection = -turnDirection;
+
+        target.transform.Rotate(0f, turnDirection * TurnSpeed * Time.deltaTime, 0f);
+    }
+
+    internal void SetSpeed(float increaseValue)
+    {
+        MoveSpeed += increaseValue;
+        Debug.Log($"new speed {MoveSpeed}");
+    }
+
+    public bool RaycastObstacleCheck(Transform target, float sign)
+    {
+        sign = Mathf.Sign(sign);
+        Ray ray = new Ray(target.transform.position + RayPositionOffset, target.transform.forward * sign);
+
+        RaycastHit hit;
+
+        if (Physics.Raycast(ray, out hit, RayDistance, ~0, QueryTriggerInteraction.Ignore))
+            return hit.collider != null;
+
+        return false;
+    }
+
 }
