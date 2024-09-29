@@ -25,8 +25,5 @@ public class ItemSpawner : MonoBehaviour
             _spawnPoint.Add(spawnPoint);
     }
 
-    private void SpawnItem(Item item, SpawnPoint parent)
-    {
-        item = Instantiate(item, parent.transform);
-    }
+    private void SpawnItem(Item item, SpawnPoint parent) => item = Instantiate(item, parent.transform);
 }

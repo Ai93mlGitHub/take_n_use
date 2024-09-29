@@ -44,11 +44,12 @@ public class RocketItem : Item
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.GetComponent<Player>() != null)
+        if (collision.gameObject.GetComponent<Player>() != null || collision.gameObject.GetComponent<Item>() != null)
             return;
 
         if (_vfxPrefab is not null)
             Instantiate(_vfxPrefab, transform.position, Quaternion.identity);
+
         Destroy(gameObject);
     }
 }

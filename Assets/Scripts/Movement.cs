@@ -10,16 +10,7 @@ public class Movement : MonoBehaviour
 
     public Vector3 RayPositionOffset { get; private set; } = new Vector3(0, 1, 0);
 
-    public Movement()
-    {
-    }
-
-    public Movement(float moveSpeed)
-    {
-        MoveSpeed = moveSpeed;
-    }
-
-    public Movement(UIController uiController, float initialSpeed, float initialTurnSpeed, float initialRayDistance, Vector3 initialRayPosOffset)
+    public void InitializeMovement(UIController uiController, float initialSpeed, float initialTurnSpeed, float initialRayDistance, Vector3 initialRayPosOffset)
     {
         _uiController = uiController;
         MoveSpeed = initialSpeed;
@@ -64,7 +55,6 @@ public class Movement : MonoBehaviour
     {
         sign = Mathf.Sign(sign);
         Ray ray = new Ray(target.transform.position + RayPositionOffset, target.transform.forward * sign);
-
         RaycastHit hit;
 
         if (Physics.Raycast(ray, out hit, RayDistance, ~0, QueryTriggerInteraction.Ignore))
@@ -74,6 +64,12 @@ public class Movement : MonoBehaviour
     }
     private void UpdateSpeedUI()
     {
+        if (_uiController is null)
+        {
+            Debug.Log("UI isn't linked");
+            return;
+        }
+
         _uiController.UpdateSpeedField(MoveSpeed);
     }
 }

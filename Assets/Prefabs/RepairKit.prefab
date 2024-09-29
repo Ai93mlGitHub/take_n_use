@@ -71,7 +71,7 @@ MonoBehaviour:
   _sizeInUse: {x: 1, y: 1, z: 1}
   _vfxPrefab: {fileID: -8336077268477590627, guid: b74cff943a3955d46afc4ed40a4197ac,
     type: 3}
-  _repairPower: 99
+  _repairPower: 5
 --- !u!1001 &4573040940112059844
 PrefabInstance:
   m_ObjectHideFlags: 0

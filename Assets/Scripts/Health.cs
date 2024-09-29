@@ -5,12 +5,9 @@ public class Health : MonoBehaviour
 {
     private UIController _uiController;
 
-    public float HealthValue { get; private set; }
+    public float HealthValue { get; private set; } = 0f;
 
-
-    public event Action<float> OnHealthChanged;
-
-    public Health(UIController uiController, float value)
+    public void InitializeHealth(UIController uiController, float value)
     {
         _uiController = uiController;
         HealthValue = value;
@@ -19,12 +16,22 @@ public class Health : MonoBehaviour
 
     public void IncreaseHealthValue(float value)
     {
-        HealthValue += value;
+        if ((HealthValue + value) > 0)
+            HealthValue += value;
+        else
+            HealthValue = 0;
+
         UpdateHealthUI();
     }
 
     private void UpdateHealthUI()
     {
+        if (_uiController is null)
+        {
+            Debug.Log("UI isn't linked");
+            return;
+        }
+
         _uiController.UpdateHealthField(HealthValue);
     }
 }
