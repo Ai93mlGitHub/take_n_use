@@ -1,29 +1,35 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Slot : MonoBehaviour
 {
-    public bool IsEmpty {get; private set;} = true;
     private Item _item;
+    private GameObject _owner;
 
-    internal void PickUp(GameObject item)
+    public bool IsEmpty {get; private set;} = true;
+
+    public void SetOwner(GameObject owner)
     {
-        IsEmpty = false;
-        _item = item.GetComponent<Item>();
-        item.transform.SetParent(gameObject.transform);
-        item.transform.localPosition = Vector3.zero;
-        item.transform.localRotation = Quaternion.identity;
-
-        Debug.Log("Item is picked up");
+        _owner = owner;
     }
 
-    internal void UseItem()
+    public void PickUp(GameObject item)
     {
-        Debug.Log("I use item!");
-        _item.Activate();
+        _item = item.GetComponent<Item>();
 
+        if (_item.IsUsed == false)
+        {
+            IsEmpty = false;
+            _item.SetUseSize();
+            item.transform.SetParent(gameObject.transform);
+            item.transform.localPosition = Vector3.zero;
+            item.transform.localRotation = Quaternion.identity;
+        }
+
+    }
+
+    public void UseItem()
+    {
+        _item.Activate(_owner);
         IsEmpty = true;
     }
 }

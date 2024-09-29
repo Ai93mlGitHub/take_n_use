@@ -1,18 +1,30 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 public class Health : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    private UIController _uiController;
+
+    public float HealthValue { get; private set; }
+
+
+    public event Action<float> OnHealthChanged;
+
+    public Health(UIController uiController, float value)
     {
-        
+        _uiController = uiController;
+        HealthValue = value;
+        UpdateHealthUI();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void IncreaseHealthValue(float value)
     {
-        
+        HealthValue += value;
+        UpdateHealthUI();
+    }
+
+    private void UpdateHealthUI()
+    {
+        _uiController.UpdateHealthField(HealthValue);
     }
 }

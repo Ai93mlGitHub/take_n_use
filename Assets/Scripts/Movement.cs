@@ -2,21 +2,37 @@ using UnityEngine;
 
 public class Movement : MonoBehaviour
 {
+    private UIController _uiController;
+
     public float MoveSpeed { get; private set; } = 15f;
     public float TurnSpeed { get; private set; } = 90f;
     public float RayDistance { get; private set; } = 3f;
+
     public Vector3 RayPositionOffset { get; private set; } = new Vector3(0, 1, 0);
 
     public Movement()
     {
     }
 
-    public Movement(float initialSpeed, float initialTurnSpeed, float initialRayDistance, Vector3 initialRayPosOffset)
+    public Movement(float moveSpeed)
     {
+        MoveSpeed = moveSpeed;
+    }
+
+    public Movement(UIController uiController, float initialSpeed, float initialTurnSpeed, float initialRayDistance, Vector3 initialRayPosOffset)
+    {
+        _uiController = uiController;
         MoveSpeed = initialSpeed;
         TurnSpeed = initialTurnSpeed;
         RayDistance = initialRayDistance;
         RayPositionOffset = initialRayPosOffset;
+        UpdateSpeedUI();
+    }
+
+    public void ChangeMoveSpeed(float speedPower)
+    {
+        MoveSpeed += speedPower;
+        UpdateSpeedUI();
     }
 
     public float GetMovementDirection(Transform target, float moveDirection)
@@ -44,12 +60,6 @@ public class Movement : MonoBehaviour
         target.transform.Rotate(0f, turnDirection * TurnSpeed * Time.deltaTime, 0f);
     }
 
-    internal void SetSpeed(float increaseValue)
-    {
-        MoveSpeed += increaseValue;
-        Debug.Log($"new speed {MoveSpeed}");
-    }
-
     public bool RaycastObstacleCheck(Transform target, float sign)
     {
         sign = Mathf.Sign(sign);
@@ -62,5 +72,8 @@ public class Movement : MonoBehaviour
 
         return false;
     }
-
+    private void UpdateSpeedUI()
+    {
+        _uiController.UpdateSpeedField(MoveSpeed);
+    }
 }

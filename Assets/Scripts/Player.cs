@@ -7,13 +7,23 @@ public class Player : MonoBehaviour
     [SerializeField] private float _rayDistance = 3f;
     [SerializeField] private Vector3 _rayPositionOffset = new Vector3(0, 1, 0);
     [SerializeField] private Slot _slotInventory;
+    [SerializeField] private float _defaultHealth = 100f;
+    [SerializeField] private UIController _uiController;
+    [SerializeField] private Transform _shootingPoint;
 
-    private Movement _movement;
     private InputControl _inputControl = new InputControl();
+
+    public Movement Movement { get; private set; }
+    public Health Health { get; private set; }
+
+    public Transform ShootingPoint { get; private set; }
 
     private void Awake()
     {
-        _movement = new Movement(_moveSpeed, _turnSpeed, _rayDistance, _rayPositionOffset);
+        Movement = new Movement(_uiController, _moveSpeed, _turnSpeed, _rayDistance, _rayPositionOffset);
+        Health = new Health(_uiController, _defaultHealth);
+        _slotInventory.SetOwner(gameObject);
+        ShootingPoint = _shootingPoint;
     }
 
     private void Update()
@@ -26,28 +36,17 @@ public class Player : MonoBehaviour
 
     private void PlayerMove()
     {
-        float moveDirection = _movement.GetMovementDirection(gameObject.transform, _inputControl.GetVerticalInputStatus());
-        _movement.Move(gameObject.transform, moveDirection);
-        _movement.Turn(gameObject.transform, moveDirection, _inputControl.GetHorizontalInputStatus());
+        float moveDirection = Movement.GetMovementDirection(gameObject.transform, _inputControl.GetVerticalInputStatus());
+        Movement.Move(gameObject.transform, moveDirection);
+        Movement.Turn(gameObject.transform, moveDirection, _inputControl.GetHorizontalInputStatus());
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.GetComponent<Item>() && _slotInventory.IsEmpty)
         { 
-            Debug.Log("I see Item");
             _slotInventory.PickUp(other.gameObject);
         }
 
-    }
-
-    public void TakeHealth()
-    {
-
-    }
-
-    public void TakeAccelerator(float increaseValue)
-    {
-        _movement.SetSpeed(increaseValue);
     }
 }
