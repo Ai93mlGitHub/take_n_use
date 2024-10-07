@@ -6,8 +6,8 @@ public class MoveRandomlyBehaviour : IdleBehaviour
     private Transform _entityTransform;
     private float _changeDirectionInterval = 1f;
     private float _timer = 0f;
-    private float _randomMoveDirection = 1f;
-    private float _randomTurnDirection = 0f;
+    private float _turnDirection = 0f;
+    private float _moveDirection = 1f;
 
     public override void Initialize(MonoBehaviour controller)
     {
@@ -17,7 +17,7 @@ public class MoveRandomlyBehaviour : IdleBehaviour
             _movement = entity.GetMovement();
         
         _entityTransform = controller.transform;
-        ChangeDirection();
+        ChangeRandomTurnDirection();
     }
 
     public override void UpdateBehaviour()
@@ -26,20 +26,60 @@ public class MoveRandomlyBehaviour : IdleBehaviour
 
         if (_timer >= _changeDirectionInterval)
         {
-            ChangeDirection();
+            ChangeRandomTurnDirection();
+            ChangeRandomMoveDirection();
             _timer = 0f;
         }
 
-        if (_movement.RaycastObstacleCheck(_entityTransform, _randomMoveDirection))
-            ChangeDirection();
-        
-        _movement.Turn(_entityTransform, _randomMoveDirection, _randomTurnDirection);
-        _movement.Move(_entityTransform, _randomMoveDirection);
+        if (_moveDirection > 0)
+            if (_movement.RaycastObstacleCheck(_entityTransform, _moveDirection))
+                ChangeMoveDirection();
+            else
+            if (_movement.RaycastObstacleCheck(_entityTransform, _moveDirection))
+                ChangeMoveDirection();
+
+        _movement.Turn(_entityTransform, _moveDirection, _turnDirection);
+        _movement.Move(_entityTransform, _moveDirection);
     }
 
-    private void ChangeDirection()
+    private void ChangeRandomTurnDirection()
     {
-        _randomMoveDirection = Random.Range(0, 2) == 0 ? 1f : -1f;
-        _randomTurnDirection = Random.Range(-1f, 1f);
+        int direction = Random.Range(0, 3);
+
+        switch (direction)
+        {
+            case 0:
+                _turnDirection = -1;
+                break;
+            case 1:
+                _turnDirection = 0;
+                break;
+            case 2:
+                _turnDirection = 1;
+                break;
+            default:
+                _turnDirection = 0;
+                break;
+        }
     }
+
+    private void ChangeRandomMoveDirection()
+    {
+        int direction = Random.Range(0, 2);
+
+        switch (direction)
+        {
+            case 0:
+                _moveDirection = -1;
+                break;
+            case 1:
+                _moveDirection = 1;
+                break;
+            default:
+                _moveDirection = 0;
+                break;
+        }
+    }
+
+    private void ChangeMoveDirection() => _moveDirection = -_moveDirection;
 }
