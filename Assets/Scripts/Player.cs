@@ -50,7 +50,7 @@ public class Player : MonoBehaviour
     {
         if (other.GetComponent<Item>() && _slotInventory.IsEmpty)
         { 
-            _slotInventory.PutInSlot(other.gameObject);
+            _slotInventory.PutInSlot(other.gameObject.GetComponent<Item>());
         }
     }
 

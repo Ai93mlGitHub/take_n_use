@@ -12,9 +12,9 @@ public class Slot : MonoBehaviour
         _owner = owner;
     }
 
-    public void PutInSlot(GameObject item)
+    public void PutInSlot(Item item)
     {
-        _item = item.GetComponent<Item>();
+        _item = item;
 
         if (_item.IsUsed == false)
         {
