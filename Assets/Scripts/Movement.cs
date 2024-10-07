@@ -6,9 +6,17 @@ public class Movement : MonoBehaviour
 
     public float MoveSpeed { get; private set; } = 15f;
     public float TurnSpeed { get; private set; } = 90f;
-    public float RayDistance { get; private set; } = 3f;
+    public float RayDistance { get; private set; } = 5f;
 
     public Vector3 RayPositionOffset { get; private set; } = new Vector3(0, 1, 0);
+
+    public void InitializeMovement(float initialSpeed, float initialTurnSpeed, float initialRayDistance, Vector3 initialRayPosOffset)
+    {
+        MoveSpeed = initialSpeed;
+        TurnSpeed = initialTurnSpeed;
+        RayDistance = initialRayDistance;
+        RayPositionOffset = initialRayPosOffset;
+    }
 
     public void InitializeMovement(UIController uiController, float initialSpeed, float initialTurnSpeed, float initialRayDistance, Vector3 initialRayPosOffset)
     {
@@ -62,6 +70,7 @@ public class Movement : MonoBehaviour
 
         return false;
     }
+
     private void UpdateSpeedUI()
     {
         if (_uiController is null)

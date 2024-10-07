@@ -12,7 +12,7 @@ public class Slot : MonoBehaviour
         _owner = owner;
     }
 
-    public void PickUp(GameObject item)
+    public void PutInSlot(GameObject item)
     {
         _item = item.GetComponent<Item>();
 
@@ -31,5 +31,6 @@ public class Slot : MonoBehaviour
     {
         _item.Activate(_owner);
         IsEmpty = true;
+        _item = null;
     }
 }
