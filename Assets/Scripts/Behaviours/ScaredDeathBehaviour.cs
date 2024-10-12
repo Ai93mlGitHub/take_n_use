@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class ScaredDeathBehaviour : IdleBehaviour
+public class ScaredDeathBehaviour : Behaviour
 {
     private Transform _entityTransform;
     private ParticleSystem _deathParticlesPrefab;
@@ -14,7 +14,7 @@ public class ScaredDeathBehaviour : IdleBehaviour
         _deathParticlesPrefab = entity.GetDeathVFX();
     }
 
-    public override void UpdateBehaviour()
+    public override void Update()
     {
         if (_deathParticlesPrefab != null && _isDeathing == false)
         {

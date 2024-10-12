@@ -14,8 +14,8 @@ public class Entity : MonoBehaviour
     private ReactionBehaviorEnum _reactionBehaviourEnum;
     private Movement _movement = new Movement();
     private bool _isIdle = true;
-    private IdleBehaviour _currentIdleBehaviour;
-    private IdleBehaviour _currentReactionBehaviour;
+    private Behaviour _currentIdleBehaviour;
+    private Behaviour _currentReactionBehaviour;
     private List<PatrolPoint> _patrolPoints;
 
     public Player Player { get; private set; }
@@ -31,12 +31,12 @@ public class Entity : MonoBehaviour
         if (_isIdle)
         {
             if (_currentIdleBehaviour != null)
-                _currentIdleBehaviour.UpdateBehaviour();
+                _currentIdleBehaviour.Update();
         }
         else
         {
             if (_currentReactionBehaviour != null)
-                _currentReactionBehaviour.UpdateBehaviour();
+                _currentReactionBehaviour.Update();
         }
     }
 

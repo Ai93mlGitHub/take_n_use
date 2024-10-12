@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class PatrolPointsBehaviour : IdleBehaviour
+public class PatrolPointsBehaviour : Behaviour
 {
     private List<PatrolPoint> _patrolPoints;
     private int _currentPointIndex = 0;
@@ -17,7 +17,7 @@ public class PatrolPointsBehaviour : IdleBehaviour
         _entityTransform = controller.transform;
     }
 
-    public override void UpdateBehaviour()
+    public override void Update()
     {
         if (_patrolPoints == null || _patrolPoints.Count == 0)
         {

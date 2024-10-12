@@ -1,12 +1,12 @@
 using UnityEngine;
 
-public class StandStillBehaviour : IdleBehaviour
+public class StandStillBehaviour : Behaviour
 {
     public override void Initialize(MonoBehaviour controller)
     {
     }
 
-    public override void UpdateBehaviour()
+    public override void Update()
     {
     }
 }

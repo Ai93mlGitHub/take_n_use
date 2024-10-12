@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class FleeBehaviour : IdleBehaviour
+public class FleeBehaviour : Behaviour
 {
     private Movement _movement;
     private Transform _entityTransform;
@@ -28,7 +28,7 @@ public class FleeBehaviour : IdleBehaviour
         _entityTransform = controller.transform;
     }
 
-    public override void UpdateBehaviour()
+    public override void Update()
     {
         if (_playerTransform == null)
         {

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class MoveRandomlyBehaviour : IdleBehaviour
+public class MoveRandomlyBehaviour : Behaviour
 {
     private Movement _movement;
     private Transform _entityTransform;
@@ -20,7 +20,7 @@ public class MoveRandomlyBehaviour : IdleBehaviour
         ChangeRandomTurnDirection();
     }
 
-    public override void UpdateBehaviour()
+    public override void Update()
     {
         _timer += Time.deltaTime;
 

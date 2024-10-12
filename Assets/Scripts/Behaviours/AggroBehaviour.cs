@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class AggroBehaviour : IdleBehaviour
+public class AggroBehaviour : Behaviour
 {
     private Movement _movement;
     private Transform _entityTransform;
@@ -29,7 +29,7 @@ public class AggroBehaviour : IdleBehaviour
         _entityTransform = controller.transform;
     }
 
-    public override void UpdateBehaviour()
+    public override void Update()
     {
         if (_playerTransform == null)
         {
